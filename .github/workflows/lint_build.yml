@@ -1,0 +1,27 @@
+name: Build image
+
+on:
+  push:
+    branches:
+      - '!master'
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: sed -i -e "s#__TAG__#${GITHUB_SHA}#g" values.yaml
+      - uses: OpenAlcoholics/github-action-helm@v0.1.5
+        with:
+          raw_command: lint
+      - uses: OpenAlcoholics/github-action-helm@v0.1.5
+        with:
+          raw_command: lint --strict
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the tagged Docker image
+        run: docker build -t ghcr.io/preparingforexams/kwbot:${GITHUB_SHA} .
