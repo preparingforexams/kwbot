@@ -1,8 +1,7 @@
-import calendar
 import inspect
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
-import telegram.constants
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -16,10 +15,10 @@ def send_telegram_error_message(message: str, *, _: Update = None):
 
 
 async def kw(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    now = datetime.now()
+    now = datetime.now(tz=ZoneInfo("Europe/Berlin"))
     if context.args:
         week_number = int(context.args[0])
-        start_of_year = datetime(now.year, 1, 1)
+        start_of_year = datetime(now.year, 1, 1, tzinfo=ZoneInfo("Europe/Berlin"))
         end_of_given_week_number = start_of_year + timedelta(weeks=week_number)
         start_of_given_week_number = end_of_given_week_number - timedelta(days=6)
 
