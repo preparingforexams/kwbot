@@ -23,6 +23,8 @@ def main():
     application = ApplicationBuilder().token(bot_token).build()
 
     weights_handler = telegram.ext.CommandHandler("kw", bot.kw)
+    weights_handler = telegram.ext.CommandHandler("month", bot.month)
+    weights_handler = telegram.ext.CommandHandler("day", bot.day)
     application.add_handler(weights_handler)
 
     application.run_polling()

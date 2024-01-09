@@ -39,6 +39,40 @@ def find_end_date_for_kw(week_number: int, now: datetime) -> datetime:
     return end_of_week_date
 
 
+async def month(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    log = create_logger(inspect.currentframe().f_code.co_name)
+    log.debug("start")
+    now = datetime.now()
+    message = f"{now.strftime('%B')} ({now.month})"
+
+    if context.args:
+        try:
+            float(context.args[0])
+            message = "no"
+        except ValueError:
+            pass
+
+    log.debug("end")
+    return await update.effective_message.reply_text(text=message)
+
+
+async def day(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    log = create_logger(inspect.currentframe().f_code.co_name)
+    log.debug("start")
+    now = datetime.now()
+    message = f"of the year: {now.strftime('%j')}\nof the month: {now.strftime('%d')}"
+
+    if context.args:
+        try:
+            float(context.args[0])
+            message = "no"
+        except ValueError:
+            pass
+
+    log.debug("end")
+    return await update.effective_message.reply_text(text=message)
+
+
 async def kw(update: Update, context: ContextTypes.DEFAULT_TYPE):
     log = create_logger(inspect.currentframe().f_code.co_name)
     log.debug("start")
