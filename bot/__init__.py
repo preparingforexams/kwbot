@@ -22,16 +22,20 @@ def find_end_date_for_kw(week_number: int, now: datetime) -> datetime:
     naive_end_of_week_date = start_of_year + timedelta(weeks=week_number)
 
     end_of_week_date = naive_end_of_week_date
-    while int(end_of_week_date.strftime("%W")) != week_number:
-        if int(end_of_week_date.strftime("%w")) < week_number:
+    attempts = 0
+    # whatever
+    max_attempts = 100
+
+    while int(end_of_week_date.strftime("%W")) != week_number and attempts <= max_attempts:
+        if int(end_of_week_date.strftime("%w")) > week_number:
             end_of_week_date += timedelta(days=1)
         else:
             end_of_week_date -= timedelta(days=1)
 
-    if end_of_week_date.weekday() != 0:
-        # since we want the end of the week we want to go to the next sunday
-        end_of_week_date += timedelta(days=(7 - end_of_week_date.weekday()))
+        attempts += 1
 
+    # sunday is always the final day of the week for our purposes (iso standard, sunday=7, same as `isoweekday()`)
+    end_of_week_date.replace(day=7)
     return end_of_week_date
 
 
