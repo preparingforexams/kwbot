@@ -22,10 +22,16 @@ def main():
     bot_token = get_bot_token_or_die()
     application = ApplicationBuilder().token(bot_token).build()
 
-    weights_handler = telegram.ext.CommandHandler("kw", bot.kw)
-    weights_handler = telegram.ext.CommandHandler("month", bot.month)
-    weights_handler = telegram.ext.CommandHandler("day", bot.day)
-    application.add_handler(weights_handler)
+    kw_handler = telegram.ext.CommandHandler("kw", bot.kw)
+    application.add_handler(kw_handler)
+    month_handler = telegram.ext.CommandHandler("month", bot.month)
+    application.add_handler(month_handler)
+    gibmonth_handler = telegram.ext.CommandHandler("gibMonat", bot.month)
+    application.add_handler(gibmonth_handler)
+    gibtag_handler = telegram.ext.CommandHandler("gibTag", bot.day)
+    application.add_handler(gibtag_handler)
+    day_handler = telegram.ext.CommandHandler("day", bot.day)
+    application.add_handler(day_handler)
 
     application.run_polling()
 
