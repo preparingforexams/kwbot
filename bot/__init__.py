@@ -36,6 +36,9 @@ def find_end_date_for_kw(week_number: int, now: datetime) -> datetime:
 
 
 async def kw(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    log = create_logger(inspect.currentframe().f_code.co_name)
+    log.debug("start")
+
     now = datetime.now(tz=ZoneInfo("Europe/Berlin"))
     if context.args:
         week_number = int(context.args[0])
@@ -47,4 +50,5 @@ async def kw(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         message = now.strftime("%W")
 
+    log.debug("end")
     return await update.effective_message.reply_text(message)
