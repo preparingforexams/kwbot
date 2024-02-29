@@ -11,7 +11,6 @@ local k = import 'github.com/grafana/jsonnet-libs/ksonnet-util/kausal.libsonnet'
     },
   },
 
-  local configmap = k.core.v1.configMap,
   local sts = k.apps.v1.statefulSet,
   local container = k.core.v1.container,
   local secret = k.core.v1.secret,
