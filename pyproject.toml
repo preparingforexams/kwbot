@@ -1,16 +1,26 @@
 [tool.poetry]
 name = "kwbot"
 version = "0.1.0"
-description = "replies with a random action to commands (non-deterministic)"
-authors = ["OpenAlcoholics <team@openalcoholics.group>"]
+description = "tells you about the calendar week"
+authors = ["BlindfoldedSurgery <team@blindfolded.surgery>"]
 license = "MIT"
 readme = "README.md"
+packages = [{ include = "kw", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 python-telegram-bot = "^20.0"
+pytest = "^8.0.2"
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.8.0"
+ruff = "^0.2.0"
+black = "^24.0.0"
+pytest = "^8.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 110

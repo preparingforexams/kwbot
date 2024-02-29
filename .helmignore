@@ -30,5 +30,5 @@ poetry.toml
 pyproject.toml
 requirements.txt
 renovate.json
-bot/
+src/
 .github/

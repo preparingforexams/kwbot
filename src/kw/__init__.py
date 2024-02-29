@@ -5,13 +5,7 @@ from zoneinfo import ZoneInfo
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from .logger import create_logger
-
-
-def send_telegram_error_message(message: str, *, _: Update = None):
-    log = create_logger(inspect.currentframe().f_code.co_name)
-
-    log.error(message)
+from kw.logger import create_logger
 
 
 # should we implement the actual ISO8601:3.1.1.23
@@ -34,13 +28,14 @@ def find_end_date_for_kw(week_number: int, now: datetime) -> datetime:
 
         attempts += 1
 
-    # sunday is always the final day of the week for our purposes (iso standard, sunday=7, same as `isoweekday()`)
+    # sunday is always the final day of the week for our purposes
+    # (iso standard, sunday=7, same as `isoweekday()`)
     end_of_week_date.replace(day=7)
     return end_of_week_date
 
 
 async def month(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    log = create_logger(inspect.currentframe().f_code.co_name)
+    log = create_logger(inspect.currentframe().f_code.co_name)  # type: ignore
     log.debug("start")
     now = datetime.now()
     message = f"{now.strftime('%B')} ({now.month})"
@@ -53,11 +48,11 @@ async def month(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
     log.debug("end")
-    return await update.effective_message.reply_text(text=message)
+    return await update.effective_message.reply_text(text=message)  # type: ignore
 
 
 async def day(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    log = create_logger(inspect.currentframe().f_code.co_name)
+    log = create_logger(inspect.currentframe().f_code.co_name)  # type: ignore
     log.debug("start")
     now = datetime.now()
     message = f"of the year: {now.strftime('%j')}\nof the month: {now.strftime('%d')}"
@@ -70,11 +65,11 @@ async def day(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
     log.debug("end")
-    return await update.effective_message.reply_text(text=message)
+    return await update.effective_message.reply_text(text=message)  # type: ignore
 
 
 async def kw(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    log = create_logger(inspect.currentframe().f_code.co_name)
+    log = create_logger(inspect.currentframe().f_code.co_name)  # type: ignore
     log.debug("start")
 
     now = datetime.now(tz=ZoneInfo("Europe/Berlin"))
@@ -83,10 +78,14 @@ async def kw(update: Update, context: ContextTypes.DEFAULT_TYPE):
         end_of_given_week_number = find_end_date_for_kw(week_number, now)
         start_of_given_week_number = end_of_given_week_number - timedelta(days=6)
 
-        date_format = '%d.%m.%Y'
-        message = f"{start_of_given_week_number.strftime(date_format)} - {end_of_given_week_number.strftime(date_format)}"
+        date_format = "%d.%m.%Y"
+        message = (
+            f"{start_of_given_week_number.strftime(date_format)}"
+            "-"
+            f"{end_of_given_week_number.strftime(date_format)}"
+        )
     else:
         message = now.strftime("%W")
 
     log.debug("end")
-    return await update.effective_message.reply_text(message)
+    return await update.effective_message.reply_text(message)  # type: ignore
